@@ -1,6 +1,5 @@
 {
   "version": 1,
-
   "energy": {
     "max": 100,
     "regen_per_turn": 1,
@@ -11,7 +10,6 @@
       "example": 5
     }
   },
-
   "gold": {
     "initial": 0,
     "exchange": {
@@ -21,7 +19,11 @@
       "gold_to_leek_cash": 1
     }
   },
-
+  "session": {
+    "daily_max_turns": 300,
+    "overlimit_message": "🌙 今天玩得够多了（{turns}/{max} 回合）。休息一下，明天再战。",
+    "enabled": false
+  },
   "trophies": [
     {
       "id": "triple_crown",

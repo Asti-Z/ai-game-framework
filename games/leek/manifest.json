@@ -13,7 +13,13 @@
                       "achievements", "ach", "compare", "cp", "journal", "j",
                       "sentiment", "sm", "cycle", "cy", "sector", "help", "h"],
     "produces": ["gold"],
-    "consumes": []
+    "consumes": [],
+    "fatigue": {
+      "max_consecutive_turns": 80,
+      "warning_at": 50,
+      "cooldown_turns": 15,
+      "warning_text": "📊 你已经连续交易 {turns} 回合了。K线看久了眼睛会花——去湖边抛两竿，或者盘会儿串。"
+    }
   },
 
   "_note": "游戏专属奖杯的检查函数需要 adapter 通过结构化返回协议上报。当前版本仅支持 arcade_config.json 中的跨游戏奖杯。leek 自带的称号系统独立运作，不受影响。"

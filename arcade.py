@@ -237,6 +237,29 @@ def _route(part, state, cfg, games):
     cmd_root = words[0].lower()
     is_free = cmd_root in free_cmds or cmd_root in ("s", "h", "l", "n", "t", "od", "wl", "cp", "ach", "tt", "sm", "cy", "j", "hx")
 
+    # ── 防沉迷：大厅级每日上限 ──
+    session_cfg = cfg.get("session", {})
+    if session_cfg.get("enabled", False):
+        daily = state.get("daily_turns", 0)
+        daily_max = session_cfg.get("daily_max_turns", 300)
+        if daily >= daily_max and not is_free:
+            msg = session_cfg.get("overlimit_message", "🌙 今天玩够了。").format(turns=daily, max=daily_max)
+            return msg
+
+    # ── 防沉迷：游戏级连续操作疲劳 ──
+    fatigue = manifest.get("shared", {}).get("fatigue", {})
+    sess = state.setdefault("game_sessions", {}).setdefault(active, {"total_turns": 0})
+    consec = sess.setdefault("consecutive_turns", 0)
+    fatigue_warning = ""
+    if fatigue:
+        max_turns = fatigue.get("max_consecutive_turns", 0)
+        warn_at = fatigue.get("warning_at", 0)
+        if max_turns > 0 and consec >= max_turns:
+            cooldown = fatigue.get("cooldown_turns", 10)
+            return f"🚫 你已经连续玩了 {consec} 回合{manifest.get('title', active)}。冷却 {cooldown} 回合。\n💡 试试 play fishing 或 play bracelet 换换脑子。"
+        if warn_at > 0 and consec + 1 == warn_at:
+            fatigue_warning = "\n" + fatigue.get("warning_text", "⚠️ 已经玩了 {turns} 回合了。").format(turns=consec)
+
     # 精力恢复（在上次操作后恢复）
     Energy.restore(state, cfg.get("energy", {}).get("regen_per_turn", 0.5))
 
@@ -247,8 +270,11 @@ def _route(part, state, cfg, games):
         if not ok:
             return err
 
+    if not is_free:
+        state["daily_turns"] = state.get("daily_turns", 0) + 1
     state["total_turns"] = state.get("total_turns", 0) + 1
-    state.setdefault("game_sessions", {}).setdefault(active, {"total_turns": 0})["total_turns"] += 1
+    sess["total_turns"] += 1
+    sess["consecutive_turns"] = consec + 1
 
     # 执行游戏指令
     engine = _load_engine(active)
@@ -279,6 +305,8 @@ def _route(part, state, cfg, games):
             Wallet.add(state, delta)
             state["_last_fishing_pts"] = pts
 
+    if fatigue_warning:
+        game_text += fatigue_warning
     return game_text
 
 
@@ -346,16 +374,34 @@ def _cmd_list_games(games, state):
     return "\n".join(lines)
 
 
+_WELCOME_BACK = {
+    "fishing": "🎣 欢迎回来钓鱼！湖面波光粼粼，浮标在等你。",
+    "leek": "🥬 欢迎回来看盘！K线跳动的感觉，是不是有点像心跳？",
+    "bracelet": "📿 欢迎回来盘串。串在手里，日子在心里。",
+}
+
 def _cmd_play(a, state, games):
     if not a:
         return "格式：play <游戏名>。用 games 查看可选游戏。"
     name = a[0].lower()
     if name not in games:
         return f"未安装 '{name}'。可选：{', '.join(games.keys())}"
+
+    # 重置旧游戏的连续操作计数
+    old_active = state.get("active_game")
+    if old_active and old_active in state.get("game_sessions", {}):
+        state["game_sessions"][old_active]["consecutive_turns"] = 0
+
     state["active_game"] = name
-    state.setdefault("game_sessions", {}).setdefault(name, {"total_turns": 0})
+    state.setdefault("game_sessions", {}).setdefault(name, {"total_turns": 0, "consecutive_turns": 0})
     m = games[name]
-    return f"🎮 已切换到 {m.get('icon','')}{m.get('title', name)}。\n{m.get('desc','')}"
+
+    welcome = _WELCOME_BACK.get(name, "")
+    lines = [f"🎮 已切换到 {m.get('icon','')}{m.get('title', name)}。"]
+    if welcome:
+        lines.append(welcome)
+    lines.append(m.get('desc', ''))
+    return "\n".join(lines)
 
 
 def _cmd_trophies(state, cfg):
