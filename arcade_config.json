@@ -1,0 +1,51 @@
+{
+  "version": 1,
+
+  "energy": {
+    "max": 100,
+    "regen_per_turn": 1,
+    "costs": {
+      "leek": 20,
+      "fishing": 15,
+      "bracelet": 10,
+      "example": 5
+    }
+  },
+
+  "gold": {
+    "initial": 0,
+    "exchange": {
+      "fishing_points_to_gold": 10,
+      "leek_profit_to_gold": 1,
+      "gold_to_fishing_points": 5,
+      "gold_to_leek_cash": 1
+    }
+  },
+
+  "trophies": [
+    {
+      "id": "triple_crown",
+      "name": "三修大师",
+      "icon": "👑",
+      "desc": "在三个游戏中各获得至少一个奖杯"
+    },
+    {
+      "id": "gold_hoarder",
+      "name": "金币囤积者",
+      "icon": "💰",
+      "desc": "累计获得 1000 金币"
+    },
+    {
+      "id": "marathon",
+      "name": "肝帝",
+      "icon": "🏃",
+      "desc": "总回合数超过 5000"
+    },
+    {
+      "id": "old_man",
+      "name": "中年老登",
+      "icon": "🧓",
+      "desc": "同时玩过钓鱼、炒股、盘串三个游戏"
+    }
+  ]
+}

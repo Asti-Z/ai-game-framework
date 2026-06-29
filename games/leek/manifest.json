@@ -1,0 +1,20 @@
+{
+  "name": "leek",
+  "title": "韭菜模拟器",
+  "icon": "🥬",
+  "version": "3.1",
+  "module": "engine",
+  "desc": "A股散户模拟器。1000元起步，13只股票，4大板块，基金经理NG+。",
+
+  "shared": {
+    "energy_cost": 20,
+    "free_commands": ["market", "m", "status", "s", "look", "l", "news", "n", "history", "hx",
+                      "orders", "od", "watchlist", "wl", "pnl", "trades", "t", "titles", "tt",
+                      "achievements", "ach", "compare", "cp", "journal", "j",
+                      "sentiment", "sm", "cycle", "cy", "sector", "help", "h"],
+    "produces": ["gold"],
+    "consumes": []
+  },
+
+  "_note": "游戏专属奖杯的检查函数需要 adapter 通过结构化返回协议上报。当前版本仅支持 arcade_config.json 中的跨游戏奖杯。leek 自带的称号系统独立运作，不受影响。"
+}

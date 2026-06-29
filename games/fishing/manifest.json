@@ -1,0 +1,17 @@
+{
+  "name": "fishing",
+  "title": "钓鱼模拟器",
+  "icon": "🎣",
+  "version": "2.2",
+  "module": "engine",
+  "desc": "文字钓鱼游戏。55种鱼，11个钓点，四季轮替。原作者 @tutusagi。",
+
+  "shared": {
+    "energy_cost": 15,
+    "free_commands": [],
+    "produces": ["gold"],
+    "consumes": []
+  },
+
+  "_note": "此游戏为第三方作品（github.com/tutusagi/ai-fishing-game）。engine.py 是框架适配器，需要用户自行安装原版 fishing.py。arcede 不重新分发原版游戏。"
+}

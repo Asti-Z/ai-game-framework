@@ -1,0 +1,24 @@
+{
+  "name": "example",
+  "title": "示例游戏",
+  "icon": "🎲",
+  "version": "1.0",
+  "module": "engine",
+  "desc": "抛硬币游戏。最简单的 arcade 框架模板。复制即用。",
+
+  "shared": {
+    "energy_cost": 5,
+    "produces": [],
+    "consumes": [],
+    "trophies": []
+  },
+
+  "trophies": [
+    {
+      "id": "example_flip_master",
+      "name": "硬币大师",
+      "icon": "🪙",
+      "desc": "得分超过 10 分"
+    }
+  ]
+}

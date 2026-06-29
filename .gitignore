@@ -1,0 +1,11 @@
+# 存档文件（每个玩家有自己的进度）
+data/
+*.json
+
+# 保留配置文件
+!arcade_config.json
+!games/*/manifest.json
+
+# Python
+__pycache__/
+*.pyc

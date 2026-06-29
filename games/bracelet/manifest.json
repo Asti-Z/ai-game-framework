@@ -1,0 +1,17 @@
+{
+  "name": "bracelet",
+  "title": "包浆模拟器",
+  "icon": "📿",
+  "version": "0.1",
+  "module": "engine",
+  "desc": "一串新籽，慢慢养。盘/刷/放，等它玉化。没有终局。（开发中）",
+
+  "shared": {
+    "energy_cost": 10,
+    "free_commands": [],
+    "produces": [],
+    "consumes": ["gold"]
+  },
+
+  "_note": "此游戏仍在开发中。当前 manifest 为占位，供参考框架如何接入一个'低精力消耗、消耗金币'类型的游戏。"
+}
